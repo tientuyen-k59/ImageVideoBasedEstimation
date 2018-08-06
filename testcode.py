@@ -48,7 +48,7 @@ for i in range(0, heigh-1):
         end = width - 1
         dis = width - 1
     B.append([i, begin, end, end - begin + 1])
-print B
+# print B
 luminance = []
 for i in range(0, len(B)):
     tong = 0
@@ -60,38 +60,24 @@ axisx = []
 axisy = []
 deriy = []
 # print luminance
-print luminance
+# print luminance
 size = len(luminance)
-deriy.append(0)
+
+def smooth(y, box_pts):
+    box = np.ones(box_pts)/box_pts
+    y_smooth = np.convolve(y, box, mode='same')
+    return y_smooth
 for i in range(0, len(luminance)):
     axisx.append(luminance[i][0])
     axisy.append(luminance[i][1])
-
 xnew = np.linspace(axisx[0], axisx[359], 360)
 power_smooth = spline(axisx, axisy, xnew)
-for i in range(1, size - 1):
-        deriy.append((luminance[i+1][1]-luminance[i-1][1])/6)
-deriy.append((luminance[size - 1][1]-luminance[size - 2][1])/3)
 
-# in ra vi tri vi
-# for i in range(0, 360):
-#     if (deriy[i] == min(deriy)):
-#         print i
-
-# plt.plot(axisx, axisy, 'r'),
-plt.plot(xnew, power_smooth,'b')
+plt.plot(xnew, axisy, color='red'),
+plt.plot(xnew, smooth(axisy, 13),'g-', lw = 2)
+plt.axis([0, 360, 0, 250])
 plt.xlabel('Bandwidth Heigh (Image Heigh)')
 plt.ylabel('Intensity Value')
 plt.show()
 
-plt.plot(xnew, deriy)
-# plt.axis([0, 500, 0, 250])
-plt.xlabel('Bandwidth Heigh (Image Heigh)')
-plt.ylabel('Derivative of Intensity')
-plt.show()
-# plt.plot(axisx, deriy,'ro')
-# plt.axis([0, 500, -1, 1])
-# plt.show()
-#
-cv2.imshow('output', out_file)
 cv2.waitKey(0)
