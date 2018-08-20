@@ -75,24 +75,35 @@ def on_mouse(event, x, y, flags, params):
 clicks = []
 
 image = cv2.imread('testFog.png', 0)
+# image = cv2.resize(image , (0, 0), fx = 0.5, fy = 0.5)
+
 heigh, width = image.shape[:2]
 ret, img = cv2.threshold(image, 188, 255, cv2.THRESH_TRUNC)
-# cv2.imshow('img', img)
+cv2.imshow('img', img)
+
 # Ls = img[heigh-1, width/2]
 # print Ls
 # i = heigh-1
 # j = width/2
 # k = width/2
+# edges = cv2.Canny(img, 20, 100)
 edges = cv2.Canny(img, 10, 100)
+
+# image = cv2.resize(image , (0, 0), fx = 0.25, fy = 0.25)
+# img = cv2.resize(img , (0, 0), fx = 0.25, fy = 0.25)
+# edges = cv2.resize(edges , (0, 0), fx = 0.25, fy = 0.25)
+cv2.imshow('edges', edges)
 
 indices = np.where(edges == 255)
 coordinates = zip(indices[0], indices[1])
-# print coordinates edge
+print coordinates
 for i in range(0, len(coordinates)):
     # print coordinates[i]
     y = coordinates[i][0]
     x = coordinates[i][1]
-    img[min(y+1, 360), x] = 0
+    # neu khong co buc anh lai
+    img [min(y+1, 361-1),x] = 0
+    # img[min(y+1, 361/2-1), x] = 0
     img[coordinates[i]] = 0
 
 cv2.namedWindow('Input')
@@ -101,9 +112,9 @@ cv2.imshow('Input', img)
 
 cv2.waitKey(5000)
 seed = clicks[-1]
-print seed
+# print seed
 out = region_growing(img, seed)
-cv2.imwrite('out_file.png', out)
+cv2.imwrite('output_file.png', out)
 
 # heigh_out, width_out = out.shape[:2]
 # B = []

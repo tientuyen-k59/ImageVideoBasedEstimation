@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 in_image = cv2.imread('testFog.png', 0)
-out_file = cv2.imread('out_file.png', 0)
+out_file = cv2.imread('output_file.png', 0)
 
 # Canny and show Edge To dam cac vung canh duoc phat hien
 # edges = cv2.Canny(in_image, 8, 100)
@@ -74,7 +74,7 @@ xnew = np.linspace(axisx[0], axisx[359], 360)
 power_smooth = spline(axisx, axisy, xnew)
 
 plt.plot(xnew, axisy, color='red'),
-plt.plot(xnew, smooth(axisy, 13),'g-', lw = 2)
+# plt.plot(xnew, smooth(axisy, 13),'g-', lw = 2)
 plt.axis([0, 360, 0, 250])
 plt.xlabel('Bandwidth Heigh (Image Heigh)')
 plt.ylabel('Intensity Value')

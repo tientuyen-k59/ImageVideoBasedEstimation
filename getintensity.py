@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 in_image = cv2.imread('testFog.png', 0)
-out_file = cv2.imread('out_file.png', 0)
+out_file = cv2.imread('output_file.png', 0)
 
 # Canny and show Edge To dam cac vung canh duoc phat hien
 # edges = cv2.Canny(in_image, 8, 100)
