@@ -185,7 +185,7 @@ def on_mouse(event, x, y, flags, params):
         clicks.append((y,x))
 
 clicks = []
-image = cv2.imread('lena.jpg', 0)
+image = cv2.imread('output_file.png', 0)
 # cv2.imshow('',image)
 # image = cv2.Canny(image, 0.05, 100, apertureSize=3)
 
