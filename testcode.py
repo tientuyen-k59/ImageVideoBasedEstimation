@@ -75,20 +75,20 @@ for i in range(0, len(luminance)):
 xnew = np.linspace(axisx[0], axisx[359], 360)
 power_smooth = spline(axisx, axisy, xnew)
 
-
+# tinh dao ham
 y_new = []
 print(axisy)
 y_new.append(0)
 for j in range(1, size - 1):
     y_new.append((axisy[j+1]-axisy[j-1])/4)
 y_new.append(0)
-# plt.plot(xnew, axisy, color='red'),
+plt.plot(xnew, axisy, color='red'),
 # plt.plot(xnew, smooth(axisy, 13),'g-', lw = 2)
 # plt.axis([0, 360, 0, 250])
 # plt.xlabel('Bandwidth Heigh (Image Heigh)')
 # plt.ylabel('Intensity Value')
 #
-print y_new
+# print y_new
 plt.plot(xnew, y_new, color='blue')
 plt.axis([0,360, -1 , 1])
 plt.show()

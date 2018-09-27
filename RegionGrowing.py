@@ -161,19 +161,29 @@ def get8n(x, y, shape):
 
 def region_growing(img, seed):
     list = []
+    # tao 1 anh trang
     outimg = np.zeros_like(img)
     list.append((seed[0], seed[1]))
     processed = []
     print len(list)
     while(len(list) > 0):
         pix = list[0]
+        p_medium = img[pix[0], pix[1]]
         outimg[pix[0], pix[1]] = 255
         for coord in get8n(pix[0], pix[1], img.shape):
+            # code lay vung theo 3 buoc
             if img[coord[0], coord[1]] != 0:
                 outimg[coord[0], coord[1]] = 255
                 if not coord in processed:
                     list.append(coord)
                 processed.append(coord)
+
+            # code lay vung theo 4 buoc
+            # if (img[coord[0], coord[1]] != 0 & (img[coord[0], coord[1]]-p_medium <= 3 )):
+            #     outimg[coord[0], coord[1]] = 255
+            #     if not coord in processed:
+            #         list.append(coord)
+            #     processed.append(coord)
         list.pop(0)
         # cv2.imshow("progress",outimg)
         # cv2.waitKey(1)
@@ -185,11 +195,11 @@ def on_mouse(event, x, y, flags, params):
         clicks.append((y,x))
 
 clicks = []
-image = cv2.imread('output_file.png', 0)
+image = cv2.imread('testFog.png', 0)
 # cv2.imshow('',image)
 # image = cv2.Canny(image, 0.05, 100, apertureSize=3)
 
-ret, img = cv2.threshold(image, 128, 255, cv2.THRESH_BINARY)
+ret, img = cv2.threshold(image, 188, 255, cv2.THRESH_TRUNC)
 cv2.namedWindow('Input')
 cv2.setMouseCallback('Input', on_mouse, 0, )
 cv2.imshow('Input', img)
