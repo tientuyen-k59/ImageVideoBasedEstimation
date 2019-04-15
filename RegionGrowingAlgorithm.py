@@ -1,10 +1,20 @@
 import cv2
 import numpy as np
+import Queue as queue
+
+
+class coor:
+    x = 0
+    y = 0
 
 # img = cv2.imread('testFog.png', 0)
 # img = cv2.Canny(img, 10, 100)
 # cv2.imshow('Canny', img)
 # cv2.waitKey(0)
+
+
+X = 314 / 2
+Y = 361 / 2 + 1
 
 def get3n(x, y, shape):
     out = []
@@ -33,16 +43,16 @@ def region_growing(img, seed):
     # add [x last, y last]
     list.append((seed[0], seed[1]))
 
-    # Run to left from bottom center image
+    # # Them cac pixel tu giua sang trai
     i = seed[0]
     while (img[seed[1], i] != 0):
-        list.append((i - 1, seed[1]))
+        list.append((max(i - 1, 1), seed[1]))
         i = i - 1;
         # print i
-    # Run to right from bottom center image
+    # Them cac pixel tu giua sang phai
     j = seed[0]
     while (img[seed[1], j] != 0):
-        list.append((j + 1, seed[1]))
+        list.append((max(j + 1, 1), seed[1]))
         j = j + 1;
     processed = []
 
@@ -75,11 +85,14 @@ def on_mouse(event, x, y, flags, params):
 clicks = []
 
 image = cv2.imread('testFog.png', 0)
-# image = cv2.resize(image , (0, 0), fx = 0.5, fy = 0.5)
-
+image = cv2.resize(image, (Y, X))
 heigh, width = image.shape[:2]
+
+print(heigh)
+print(width)
+
 ret, img = cv2.threshold(image, 188, 255, cv2.THRESH_TRUNC)
-cv2.imshow('img', img)
+# cv2.imshow('img', img)
 
 # Ls = img[heigh-1, width/2]
 # print Ls
@@ -87,24 +100,29 @@ cv2.imshow('img', img)
 # j = width/2
 # k = width/2
 # edges = cv2.Canny(img, 20, 100)
-edges = cv2.Canny(img, 10, 100)
+
+edges = cv2.Canny(img, 20, 100)
 
 # image = cv2.resize(image , (0, 0), fx = 0.25, fy = 0.25)
 # img = cv2.resize(img , (0, 0), fx = 0.25, fy = 0.25)
 # edges = cv2.resize(edges , (0, 0), fx = 0.25, fy = 0.25)
+print "Debug HEHEEHEHEHEEHEH"
 cv2.imshow('edges', edges)
 
 indices = np.where(edges == 255)
 coordinates = zip(indices[0], indices[1])
 print coordinates
+# To den cac vung canh
 for i in range(0, len(coordinates)):
     # print coordinates[i]
     y = coordinates[i][0]
     x = coordinates[i][1]
-    # neu khong co buc anh lai
-    img [min(y+1, 361-1),x] = 0
-    # img[min(y+1, 361/2-1), x] = 0
+    # cho nhung diem canh thanh mau den
+    # nhung diem tren diem canh cung chuyen thanh mau den de tao thanh duong lien
     img[coordinates[i]] = 0
+    img[min(y + 1, heigh - 1), x] = 0
+#     # img[min(y+1, Y/2-1), x] = 0
+
 
 cv2.namedWindow('Input')
 cv2.setMouseCallback('Input', on_mouse, 0,)
@@ -112,7 +130,7 @@ cv2.imshow('Input', img)
 
 cv2.waitKey(5000)
 seed = clicks[-1]
-# print seed
+print seed
 out = region_growing(img, seed)
 cv2.imwrite('output_file.png', out)
 

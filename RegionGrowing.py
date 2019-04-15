@@ -172,18 +172,18 @@ def region_growing(img, seed):
         outimg[pix[0], pix[1]] = 255
         for coord in get8n(pix[0], pix[1], img.shape):
             # code lay vung theo 3 buoc
-            if img[coord[0], coord[1]] != 0:
-                outimg[coord[0], coord[1]] = 255
-                if not coord in processed:
-                    list.append(coord)
-                processed.append(coord)
-
-            # code lay vung theo 4 buoc
-            # if (img[coord[0], coord[1]] != 0 & (img[coord[0], coord[1]]-p_medium <= 3 )):
+            # if img[coord[0], coord[1]] != 0:
             #     outimg[coord[0], coord[1]] = 255
             #     if not coord in processed:
             #         list.append(coord)
             #     processed.append(coord)
+
+            # code lay vung theo 4 buoc
+            if (img[coord[0], coord[1]] != 0 & (img[coord[0], coord[1]] - p_medium <= 3)):
+                outimg[coord[0], coord[1]] = 255
+                if not coord in processed:
+                    list.append(coord)
+                processed.append(coord)
         list.pop(0)
         # cv2.imshow("progress",outimg)
         # cv2.waitKey(1)
@@ -205,7 +205,7 @@ cv2.setMouseCallback('Input', on_mouse, 0, )
 cv2.imshow('Input', img)
 cv2.waitKey(5000)
 seed = clicks[-1]
-# print seed
+print seed
 out = region_growing(img, seed)
 cv2.imshow('Region Growing', out)
 cv2.waitKey()

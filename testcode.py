@@ -4,9 +4,12 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-
+X = 157
+Y = 181
 in_image = cv2.imread('testFog.png', 0)
+image = cv2.resize(in_image, (181, 157))
 out_file = cv2.imread('output_file.png', 0)
+
 
 # Canny and show Edge To dam cac vung canh duoc phat hien
 # edges = cv2.Canny(in_image, 8, 100)
@@ -24,6 +27,9 @@ out_file = cv2.imread('output_file.png', 0)
 # cv2.imshow('Canny', edges)
 #
 heigh, width = out_file.shape[:2]
+# print("heigh " + str(heigh))
+# print("width " + str(width))
+
 # mang B chua cac diem anh mau trang la region_growing
 B = []
 for i in range(0, heigh-1):
@@ -56,13 +62,13 @@ for i in range(0, len(B)):
     tong = 0
     for j in range(B[i][1], B[i][2] + 1):
         tong = tong + in_image[i, j]
-    luminance.append([i, tong//B[i][3]])
+    luminance.append([i, tong / B[i][3]])
 
 axisx = []
 axisy = []
 deriy = []
 # print luminance
-# print luminance
+print luminance
 size = len(luminance)
 
 def smooth(y, box_pts):
@@ -72,21 +78,21 @@ def smooth(y, box_pts):
 for i in range(0, len(luminance)):
     axisx.append(luminance[i][0])
     axisy.append(luminance[i][1])
-xnew = np.linspace(axisx[0], axisx[359], 360)
+# mang xnew [0, X, do chia nho nhat la 1]
+xnew = np.linspace(axisx[0], axisx[X - 2], X - 1, endpoint=True)
 power_smooth = spline(axisx, axisy, xnew)
 
 # tinh dao ham
 y_new = []
-print(axisy)
 y_new.append(0)
 for j in range(1, size - 1):
     y_new.append((axisy[j+1]-axisy[j-1])/4)
 y_new.append(0)
 plt.plot(xnew, axisy, color='red'),
-# plt.plot(xnew, smooth(axisy, 13),'g-', lw = 2)
-# plt.axis([0, 360, 0, 250])
-# plt.xlabel('Bandwidth Heigh (Image Heigh)')
-# plt.ylabel('Intensity Value')
+plt.plot(xnew, smooth(axisy, 13), 'g-', lw=2)
+plt.axis([0, 181, 0, 250])
+plt.xlabel('Bandwidth Heigh (Image Heigh)')
+plt.ylabel('Intensity Value')
 #
 # print y_new
 plt.plot(xnew, y_new, color='blue')
